@@ -1,0 +1,22 @@
+yarn init -y
+yarn add express
+--------------------------
+yarn add nodemon -D
+"scripts": {
+    "dev": "nodemon src/server.js"
+  },
+-------------------------- 15 min
+
+yarn add mongoose
+
+1:15 filtro.
+
+yarn create react-app pasta(frontend) ou npx create-react-app pasta
+
+yarn add axios (rotas no front)
+
+yarn add cors controlar requisições para o back
+
+yarn add react-router-dom (ajudar nas rotas)
+
+48 min - navegar outra page.

@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  min-height: 100%;
+}
+
+body {
+  background: #000 url('./assets/carrinho.png');
+  -webkit-font-smoothing: antialiased !important;
+}
+
+
+body, input, button {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color:cornflowerblue ;
+}
+
+.container {
+  margin: 80px auto 0;
+  max-width: 450px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  width: 100%;
+  background: #FFF;
+  margin-top: 50px;
+  border-radius: 4px;
+  padding: 30px;
+}
+
+.content > p {
+  text-align: center;
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 30px;
+}
+
+.content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.content form label {
+  font-size: 14px;
+  color:cornflowerblue;
+  font-weight: bold;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.content form input {
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  height: 45px;
+  padding: 0 15px;
+  font-size: 16px;
+}
+
+.content button.btn {
+  margin: 5px;
+  border: 0;
+  border-radius: 2px;
+  width: 100%;
+  height: 42px;
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background: cornflowerblue ;
+  color: #fff;
+  cursor: pointer;
+}
+
+.content button.btn:hover {
+  background: rgb(84, 125, 199)
+}
+
+.content select {
+  margin: 1px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  width: 100%;
+  height: 42px;
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color:cornflowerblue ;
+  cursor: pointer;
+}
+
+.content > h1 {
+  text-align: center;
+}
