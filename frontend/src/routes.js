@@ -10,6 +10,8 @@ import CriarLista from './pages/CriarLista';
 import Lista from './pages/Listas';
 import PopularLista from './pages/PopularLista';
 
+import SimpleBottomNavigation from './pages/SimpleBottomNavigation';
+
 export default function Routes() {
     return (
         <BrowserRouter>
@@ -20,6 +22,7 @@ export default function Routes() {
                 <Route path="/criarLista" component={CriarLista} />
                 <Route path="/listas" component={Lista} />
                 <Route path="/popularLista" component={PopularLista} />
+                <Route path="/teste" component={SimpleBottomNavigation}/>
             </Switch>
         </BrowserRouter>
     );

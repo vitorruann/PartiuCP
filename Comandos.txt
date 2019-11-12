@@ -20,3 +20,12 @@ yarn add cors controlar requisições para o back
 yarn add react-router-dom (ajudar nas rotas)
 
 48 min - navegar outra page.
+
+-----------------
+npm install -g expo-cli
+
+expo init nomedoprojeto
+blank
+
+yarn react-navigation
+expo install react-native-gesture-handler react-native-reanimated

@@ -1,10 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 
-export default function PopularLista() {
+import { makeStyles } from '@material-ui/core/styles';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import ShoppingCartSharpIcon from '@material-ui/icons/ShoppingCartSharp';
+import ListAltRoundedIcon from '@material-ui/icons/ListAltRounded';
+import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+
+const useStyles = makeStyles({
+    root: {
+        width: 400,
+    },
+});
+
+export default function PopularLista({ history }) {
+    const classes = useStyles();
+    const [value, setValue] = React.useState('lista');
 
     const [popularLista, setPopularlista] = useState([]);
 
+    const [produtos, setProdutos] = useState([]);
+
+    const [produto, setProduto] = useState('');
+
+    //Função para carregar os produtos da lista selecionada pelo ID, trazendo as informações do banco banco de dados
     useEffect(() => {
         async function carregarProdutos() {
 
@@ -19,8 +39,7 @@ export default function PopularLista() {
         carregarProdutos();
     }, []);
 
-    const [produtos, setProdutos] = useState([]);
-
+    //função para carregar todos os produtos gerais do banco de dados e inserir no select
     useEffect(() => {
         async function loadProdutos() {
             const response = await api.get('/listaProdutos');
@@ -31,46 +50,55 @@ export default function PopularLista() {
         loadProdutos();
     }, []);
 
-    const [produto, setProduto] = useState('');
-
-    async function handleSubmit(event) {
-        
+    //função para inserir um produto novo na lista, depois de inserir, é carregado novamente os produtos dessa lista.
+    
+    async function handleSubmit() {
 
         const lista_id = localStorage.getItem('lista');
 
         await api.post('/popularLista', { produto }, {
             headers: { lista_id }
         });
-
-        const response = await api.get('/produtosLista', {
-            headers: { lista_id }
-        });
-
-        setPopularlista(response.data);
-
+        this.carregarProdutos();
     }
 
+    function menu(event, newValue) { 
+        
+        setValue(newValue)
+
+        if (value === "home") {    
+            history.push('/');   
+        } else if (value === "produto") {
+            history.push('/criarProdutos'); 
+        } else if (value === "lista") {
+            history.push('/criarLista'); 
+        }
+    }
+
+
+    let num = 0;
     return (
         <>
             <h1>Itens da Lista</h1>
 
-            <ul className="popular-list">
-                {popularLista.map(produtoLista => (
-                    <li key={produtoLista._id}>
-                        <strong>{produtoLista.produto}</strong>
-                    </li>
-                ))}
-            </ul>
+            {popularLista.map(produtoLista => (
+                <label htmlFor={num} key={produtoLista._id}>
+                    <input type="checkbox" id={num++} value={produtoLista._id} />
+                    <strong>{produtoLista.produto}</strong>
+                    
+                </label>
+            ))}
 
             <div>
                 <form onSubmit={handleSubmit} >
-                <input 
-                id="produto" 
-                type="produto" 
-                placeholder="Digite o produto a ser inserido"
-                value={produto}
-                onChange={event => setProduto(event.target.value)}
-                />
+                    <input
+                        id="produto"
+                        type="produto"
+                        placeholder="Digite o produto a ser inserido"
+                        value={produto}
+                        onChange={event => setProduto(event.target.value)}
+                    />
+
                     <select
                         onChange={event => setProduto(event.target.value)} >
                         <option value="">Selecione o produto</option>
@@ -85,7 +113,19 @@ export default function PopularLista() {
                     </select>
 
                     <button className="btn" type="submit">Cadastrar Produto</button>
+                    <button className="btn" type="submit">Excluir Produto</button>
                 </form>
+
+                <BottomNavigation
+                value={value}
+                onChange={menu}
+                showLabels
+                className={classes.root}
+            >   
+               <BottomNavigationAction value="home" label="Home" icon={<HomeRoundedIcon />} />
+                <BottomNavigationAction value="produto" label="Produtos" icon={<ShoppingCartSharpIcon />} />
+                <BottomNavigationAction value="lista" label="Listas" icon={<ListAltRoundedIcon />} />
+            </BottomNavigation>
             </div>
         </>
     )
