@@ -59,7 +59,7 @@ body, input, button {
   margin-top: 8px;
 }
 
-.content form input {
+.content .input {
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 2px;

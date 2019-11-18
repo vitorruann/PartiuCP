@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 
 export default function CriarLista({ history }) {
     const classes = useStyles();
-    const [value, setValue] = React.useState('lista');
+    const [value, setValue] = React.useState('');
 
     const [nomeLista, setLista] = useState('');
 
@@ -37,12 +37,16 @@ export default function CriarLista({ history }) {
     }
 
 
-    async function handleSubmit(event) {
+    async function criarLista(event) {
         event.preventDefault();
 
-        await api.post('/criarLista', { nomeLista });
+        if (nomeLista === "") {
+            alert("Valor invalido")
+        } else {
+            await api.post('/criarLista', { nomeLista });
 
-        history.push('/listas');
+            history.push('/listas');
+        }
     }
 
     return (
@@ -50,9 +54,10 @@ export default function CriarLista({ history }) {
             <p>
                 <strong>Listas</strong>
             </p>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={criarLista}>
                 <label htmlFor="lista">Lista: </label>
                 <input
+                    className="input"
                     type="Lista"
                     id="Lista"
                     placeholder="Digite o nome da lista a ser criada"

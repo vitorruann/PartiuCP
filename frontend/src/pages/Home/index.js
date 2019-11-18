@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import api from '../../services/api';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,19 +16,31 @@ const useStyles = makeStyles({
 
 export default function Home({ history }) {
     const classes = useStyles();
-    const [value, setValue] = React.useState('home');
+    const [value, setValue] = React.useState('');
     const [nomeLista, setLista] = useState('');
+    const [listas, setListas] = useState([]);
 
-    function menu(event, newValue) { 
-        
+    useEffect(() => {
+        async function loadListas() {
+            const response = await api.get('/listas');
+
+            setListas(response.data);
+        }
+
+        loadListas();
+    }, []);
+
+
+    function menu(event, newValue) {
+
         setValue(newValue)
 
-        if (value === "home") {    
-            history.push('/');   
+        if (value === "home") {
+            history.push('/');
         } else if (value === "produto") {
-            history.push('/criarProdutos'); 
+            history.push('/criarProdutos');
         } else if (value === "lista") {
-            history.push('/criarLista'); 
+            history.push('/criarLista');
         }
     }
 
@@ -44,6 +56,7 @@ export default function Home({ history }) {
         history.push('/popularLista');
     }
 
+    let num = 0;
     return (
         <>
             <p>
@@ -51,14 +64,19 @@ export default function Home({ history }) {
             </p>
 
             <form onSubmit={handleSubmit}>
-                <label htmlFor="popularLista">Nome da Lista: </label>
-                <input
-                    type="nomeLista"
-                    id="nomeLista"
-                    placeholder="Digite o nome da lista para editar"
-                    value={nomeLista}
-                    onChange={event => setLista(event.target.value)}
-                />
+                <label htmlFor="popularLista">Selecione a lista: </label>
+                {listas.map(lista => (
+                    <label htmlFor={num} key={lista._id}>
+                        <input
+                            name="grp1"
+                            type="radio"
+                            id={num++}
+                            value={lista.nomeLista}
+                            onChange={event => setLista(event.target.value)}
+                        />
+                        <strong>{lista.nomeLista}</strong>
+                    </label>
+                ))}
                 <button className="btn" type="submit">Popular Lista</button>
             </form>
             <BottomNavigation
@@ -66,8 +84,8 @@ export default function Home({ history }) {
                 onChange={menu}
                 showLabels
                 className={classes.root}
-            >   
-               <BottomNavigationAction value="home" label="Home" icon={<HomeRoundedIcon />} />
+            >
+                <BottomNavigationAction value="home" label="Home" icon={<HomeRoundedIcon />} />
                 <BottomNavigationAction value="produto" label="Produtos" icon={<ShoppingCartSharpIcon />} />
                 <BottomNavigationAction value="lista" label="Listas" icon={<ListAltRoundedIcon />} />
             </BottomNavigation>

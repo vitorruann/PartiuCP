@@ -3,7 +3,7 @@ const Lista = require('../models/Lista');
 module.exports = {
     async index(req, res) {
 
-        const listas = await Lista.find({ });
+        const listas = await Lista.find({});
 
         return res.json(listas);
     },
@@ -18,5 +18,20 @@ module.exports = {
         }
 
         return res.json(lista);
+    },
+
+    async destroyer(req, res) {
+        const { nomeLista } = req.body;
+
+        try {
+
+            const response = await Lista.deleteOne({ nomeLista });
+            return res.json(response);
+
+        } catch (error) {
+
+            return res.json(error);
+        
+        }
     }
 }

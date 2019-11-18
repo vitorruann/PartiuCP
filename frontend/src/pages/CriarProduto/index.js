@@ -16,16 +16,28 @@ const useStyles = makeStyles({
 
 export default function CriarProduto({ history }) {
     const classes = useStyles();
-    const [value, setValue] = React.useState('produto');
+    const [value, setValue] = React.useState('');
 
     const [nomeProduto, setProduto] = useState('');
 
-    async function handleSubmit(event) {
+    async function criarProduto(event) {
         event.preventDefault();
 
-        await api.post('/criarProdutos', { nomeProduto });
+        if (nomeProduto === "") {
+        
+            alert("Valor invalido");
+        
+        } else {
+        
+            const response = await api.post('/criarProdutos', { nomeProduto });
+            if (!response) {
+                alert("Produto já existe");
+            } else {
 
-        history.push('/listaProdutos');
+                history.push('/listaProdutos');
+            
+            }
+        }
     }
     
     function menu(event, newValue) { 
@@ -47,9 +59,10 @@ export default function CriarProduto({ history }) {
             <p>
                 <strong>Produto</strong>
             </p>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={criarProduto}>
                 <label htmlFor="produto">Produto: </label>
                 <input
+                    className="input"
                     type="produto"
                     id="produto"
                     placeholder="Digite o nome do produto a ser criado"

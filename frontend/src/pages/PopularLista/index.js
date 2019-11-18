@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 
 export default function PopularLista({ history }) {
     const classes = useStyles();
-    const [value, setValue] = React.useState('lista');
+    const [value, setValue] = React.useState('');
 
     const [popularLista, setPopularlista] = useState([]);
 
@@ -51,27 +51,39 @@ export default function PopularLista({ history }) {
     }, []);
 
     //função para inserir um produto novo na lista, depois de inserir, é carregado novamente os produtos dessa lista.
-    
-    async function handleSubmit() {
-
+    async function cadastrarProduto() {
         const lista_id = localStorage.getItem('lista');
+        
+        if (produto === "") {
+            alert("Valor invalido")
+        } else {
+            await api.post('/popularLista', { produto }, {
+                headers: { lista_id }
+            });
+    
+            this.carregarProdutos();
 
-        await api.post('/popularLista', { produto }, {
-            headers: { lista_id }
-        });
-        this.carregarProdutos();
+        }
     }
 
-    function menu(event, newValue) { 
-        
+    async function removerProduto() {
+        const lista_id = localStorage.getItem('lista');
+
+        await api.post('/removerProdutoLista', { produto }, {
+            headers:  {lista_id}
+        });
+    }
+
+    function menu(event, newValue) {
+
         setValue(newValue)
 
-        if (value === "home") {    
-            history.push('/');   
+        if (value === "home") {
+            history.push('/');
         } else if (value === "produto") {
-            history.push('/criarProdutos'); 
+            history.push('/criarProdutos');
         } else if (value === "lista") {
-            history.push('/criarLista'); 
+            history.push('/criarLista');
         }
     }
 
@@ -81,27 +93,19 @@ export default function PopularLista({ history }) {
         <>
             <h1>Itens da Lista</h1>
 
-            {popularLista.map(produtoLista => (
-                <label htmlFor={num} key={produtoLista._id}>
-                    <input type="checkbox" id={num++} value={produtoLista._id} />
-                    <strong>{produtoLista.produto}</strong>
-                    
-                </label>
-            ))}
-
             <div>
-                <form onSubmit={handleSubmit} >
+                <form onSubmit={cadastrarProduto}>
                     <input
+                        className="input"
                         id="produto"
                         type="produto"
                         placeholder="Digite o produto a ser inserido"
                         value={produto}
                         onChange={event => setProduto(event.target.value)}
                     />
-
                     <select
                         onChange={event => setProduto(event.target.value)} >
-                        <option value="">Selecione o produto</option>
+                        <option>Selecione o produto</option>
                         {produtos.map(produto => (
                             <option
                                 key={produto._id}
@@ -111,21 +115,35 @@ export default function PopularLista({ history }) {
                             </option>
                         ))}
                     </select>
-
                     <button className="btn" type="submit">Cadastrar Produto</button>
-                    <button className="btn" type="submit">Excluir Produto</button>
                 </form>
 
+                <form onSubmit={removerProduto}>
+                {popularLista.map(produtoLista => (
+                    <label htmlFor={num} key={produtoLista._id}>
+                        <input
+                
+                            type="checkbox"
+                            id={num++}
+                            value={produtoLista.produto}
+                            onChange={event => setProduto(event.target.value)}
+                        />
+                        <strong>{produtoLista.produto}</strong>
+                    </label>
+            ))}
+            <button className="btn" type="submit">Excluir Produto</button>
+            </form>
+
                 <BottomNavigation
-                value={value}
-                onChange={menu}
-                showLabels
-                className={classes.root}
-            >   
-               <BottomNavigationAction value="home" label="Home" icon={<HomeRoundedIcon />} />
-                <BottomNavigationAction value="produto" label="Produtos" icon={<ShoppingCartSharpIcon />} />
-                <BottomNavigationAction value="lista" label="Listas" icon={<ListAltRoundedIcon />} />
-            </BottomNavigation>
+                    value={value}
+                    onChange={menu}
+                    showLabels
+                    className={classes.root}
+                >
+                    <BottomNavigationAction value="home" label="Home" icon={<HomeRoundedIcon />} />
+                    <BottomNavigationAction value="produto" label="Produtos" icon={<ShoppingCartSharpIcon />} />
+                    <BottomNavigationAction value="lista" label="Listas" icon={<ListAltRoundedIcon />} />
+                </BottomNavigation>
             </div>
         </>
     )
