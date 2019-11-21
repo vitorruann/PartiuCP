@@ -5,6 +5,12 @@ echo ***************************************************************************
 echo ESPERE A JANELA ANTERIOR FECHAR PARA CONTINUAR!!!!
 echo ****************************************************************************
 
-yarn start
+cd backend
+ 
+start dev.bat
 
-pause
+cd ..\frontend
+
+start iniciar.bat
+
+exit
