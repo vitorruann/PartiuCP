@@ -9,7 +9,6 @@ pause
 cd frontend
 call front
 pause
-cd frontend
 call frontc
 pause
 cd ..\backend
