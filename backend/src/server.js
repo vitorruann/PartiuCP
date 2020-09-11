@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://rocket:ads1234@cluster0-to2nf.mongodb.net/PartiuCompras?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGO_DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
