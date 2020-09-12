@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
 import "dotenv/config";
+import './App.css';
 
 import Routes from './routes';
 

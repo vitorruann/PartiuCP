@@ -12,6 +12,7 @@ module.exports = {
     //criar um produto
     async store(req, res) {
         const { nomeProduto } = req.body;
+        console.log('a');
 
         let produto = await Produto.findOne({ nomeProduto });
 
